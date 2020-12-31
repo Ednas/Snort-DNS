@@ -1,3 +1,13 @@
+# Immersive Labs Snort Rules
+# A Note if you've come here looking for help. If you get this message:
+# 'ascii' codec can't encode character '\u201c' in position 65: ordinal not in range(128)
+# as you're trying to solve this assignment. It's because you've copied the rule from the Info tab. E.g.
+# content: “GET”; http_method;
+# the labs have very fancy quotes in the info tab.  https://www.compart.com/en/unicode/U+201D
+# Change the quotation marks to "", that is regular quotation marks and it will work out fine.
+
+
+
 # Snort Rules: Ep.1
 
 # To start, here is an example of a Snort rule 
@@ -27,6 +37,8 @@ alert icmp any any -> any any (msg: "Detecting ICMP traffic" ; sid:1000001)
 # To solve this, you need to add the depth paramater. That is depth: 3; after the content
 alert tcp any any -> any any (msg:"Immersive Labs Question 5"; content:"|37 e1 a4|"; depth: 3; sid:1000001;)
 
+
+
 # Snort Rules: Ep.2 - DNS
 # Question 1
 # Create a Snort rule to detect all DNS Traffic, then test the rule with the scanner and submit the token.
@@ -51,16 +63,24 @@ alert udp any any -> $HOME_NET 53 (msg: "Alert detected interbanx in DNS request
 
 
 
-
 # Snort Rules: Ep.3 – HTTP
-# Question 1
+# Question 1 (not finished)
 # Create a Snort rule that looks for ‘msn.com’ in an HTTP cookie value.
+# This matches 8 packets, but isn't getting the cookie
+alert tcp any any -> any any (msg: "msn.com in cookie"; content: "|6d 73 6e 63 6f 6d|"; sid:1000001;)
+
+# This isn't the solution, but is the closes I'm getting, doesn't return any packets when I add http_cookie
+alert tcp any any -> any any (msg: "msn.com in cookie"; content: "|6d 73 6e 63 6f 6d|"; http_cookie; sid:1000001;)
 
 # Question 2
 # Create a Snort rule that looks for an HTTP method ‘GET’ and contains ‘gif’ in the URL.
+alert tcp any any -> any any (msg: "msn.com in cookie"; content: "GET"; http_method; content: "|67 69 66|"; http_uri; sid:1000001;)
 
 # Question 3
 # Create a rule that will alert when 'MZ' are first two characters in the HTTP body.
+# This question/answer helped me figure it out https://stackoverflow.com/questions/54015580/snort-rule-http-body-content
+alert tcp any any -> any any (msg: "alert MZ first 2 chars in HTTP Body"; file_data; content:"MZ"; depth: 2; sid:1000001;)
 
 # Question 4
 # If you wanted a rule to match on a URI string that has been URI decoded, which modifier would you use?
+# http_uri
