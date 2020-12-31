@@ -1,0 +1,66 @@
+# Snort Rules: Ep.1
+
+# To start, here is an example of a Snort rule 
+alert tcp 10.10.10.0/24 any -> 192.168.0.0/24 443 (msg: “Test Rule”; content: “This is some content”; sid: 5000001; rev: 1;)
+
+# Question 1
+# Create a Snort rule that will alert on traffic using TCP with a destination port of 443.
+alert tcp any any -> any 443  (msg: "My first Snort Rule" ; sid:1000002)
+
+# Question 2
+# What is the name of the content modifier that can be used to alert on HTTP Status Codes?
+# http_stat_code
+
+# Question 3
+# Create a Snort rule that will detect outbound traffic using TCP to ports 443 and 447
+
+alert tcp any any -> any 443  (msg: "Alert on port 443" ; sid:1000001;)
+alert tcp any any -> any 447 (msg: "Alert on port 447" ; sid:1000002;)
+
+# Question 4
+# Create a Snort rule that will detect all ICMP traffic
+alert icmp any any -> any any (msg: "Detecting ICMP traffic" ; sid:1000001)
+
+# Question 5
+# Modify this rule, so that it only alerts if the content matches in the first three bytes: 
+# 'alert tcp any any -> any any (msg:"Immersive Labs Question 5"; content:"|37 e1 a4|"; sid:1000001;)'
+# To solve this, you need to add the depth paramater. That is depth: 3; after the content
+alert tcp any any -> any any (msg:"Immersive Labs Question 5"; content:"|37 e1 a4|"; depth: 3; sid:1000001;)
+
+# Snort Rules: Ep.2 - DNS
+# Question 1
+# Create a Snort rule to detect all DNS Traffic, then test the rule with the scanner and submit the token.
+alert udp any any <> any 53 (msg: "Detecting DNS traffic" ; sid:1000001)
+
+# Question 2
+# Create a rule to detect DNS requests to 'icanhazip', then test the rule with the scanner and submit the token.
+alert udp any any -> $HOME_NET 53 (msg: "Alert detected icanhazip in DNS request"; sid:1000001; content: "|69 63 61 6e 68 61 7a 69 70|"; )
+
+# Question 3
+# Create a rule to detect DNS requests to 'interbanx', then test the rule with the scanner and submit the token.
+alert udp any any -> $HOME_NET 53 (msg: "Alert detected interbanx in DNS request"; sid:1000001; content: "|69 6e 74 65 72 62 61 6e 78|"; )
+
+# Question 4
+# Which of the following would cause DNS to use TCP instead of UDP?
+#	A. If the response is greater than 512 bytes
+#	B. Tasks like zone transfers
+#	C. Explicitly set by the DNS operator
+#	D. All of them
+
+# Answer: All of them
+
+
+
+
+# Snort Rules: Ep.3 – HTTP
+# Question 1
+# Create a Snort rule that looks for ‘msn.com’ in an HTTP cookie value.
+
+# Question 2
+# Create a Snort rule that looks for an HTTP method ‘GET’ and contains ‘gif’ in the URL.
+
+# Question 3
+# Create a rule that will alert when 'MZ' are first two characters in the HTTP body.
+
+# Question 4
+# If you wanted a rule to match on a URI string that has been URI decoded, which modifier would you use?
